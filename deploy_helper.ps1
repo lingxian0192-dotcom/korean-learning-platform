@@ -49,4 +49,8 @@ if ($repoUrl) {
         Write-Host "`n✅ 推送成功！" -ForegroundColor Green
         Write-Host "现在您可以去 Vercel 和 Render 导入这个仓库进行部署了。"
     } else {
-        Write-Host "`n❌ 推送失败。请检查网络或
+        Write-Host "`n❌ 推送失败。请检查网络或账号权限。" -ForegroundColor Red
+    }
+} else {
+    Write-Host "未输入地址，脚本结束。" -ForegroundColor Yellow
+}
