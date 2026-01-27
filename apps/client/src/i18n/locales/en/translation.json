@@ -1,0 +1,78 @@
+{
+  "common": {
+    "loading": "Loading..."
+  },
+  "auth": {
+    "login_title": "Sign in to your account",
+    "register_title": "Create a new account",
+    "email": "Email address",
+    "password": "Password",
+    "name": "Full Name",
+    "login_button": "Sign in",
+    "register_button": "Sign up",
+    "no_account": "Or continue with",
+    "has_account": "Already have an account?",
+    "register_link": "Create new account",
+    "login_link": "Sign in to existing account"
+  },
+  "admin": {
+    "title": "Manage Resources",
+    "add_resource": "Add New Resource",
+    "edit_resource": "Edit Resource",
+    "delete_resource": "Delete",
+    "form": {
+      "title": "Title",
+      "type": "Type",
+      "category": "Category",
+      "difficulty": "Difficulty",
+      "description": "Description",
+      "content": "Content (YouTube URL or Markdown)",
+      "thumbnail": "Thumbnail URL",
+      "submit": "Save Resource",
+      "cancel": "Cancel"
+    },
+    "success": "Resource saved successfully",
+    "delete_confirm": "Are you sure you want to delete this resource?"
+  },
+  "detail": {
+    "back": "Back to Resources",
+    "complete": "Mark as Complete",
+    "completed": "Completed",
+    "progress": "Your Progress",
+    "video_content": "Video Content",
+    "article_content": "Article Content"
+  },
+  "app": {
+    "title": "KoreanLearning",
+    "nav": {
+      "home": "Home",
+      "resources": "Resources",
+      "login": "Login",
+      "register": "Register"
+    }
+  },
+  "home": {
+    "title": "Master Korean",
+    "subtitle": "The Smart Way",
+    "description": "An extensible platform for learning Korean. Videos, Articles, and AI-powered tools all in one place.",
+    "start_learning": "Start Learning"
+  },
+  "resources": {
+    "title": "Learning Resources",
+    "loading": "Loading resources...",
+    "error": "Error loading resources",
+    "no_resources": "No resources found. Start by creating one!",
+    "start_learning": "Start Learning",
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "type": {
+      "video": "VIDEO",
+      "article": "ARTICLE",
+      "audio": "AUDIO",
+      "interactive": "INTERACTIVE"
+    }
+  }
+}
