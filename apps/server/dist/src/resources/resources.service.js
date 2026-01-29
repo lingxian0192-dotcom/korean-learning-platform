@@ -16,9 +16,9 @@ let ResourcesService = class ResourcesService {
     constructor(supabaseService) {
         this.supabaseService = supabaseService;
     }
-    async create(createResourceDto, userId) {
+    async create(createResourceDto, userId, token) {
         const { data, error } = await this.supabaseService
-            .getClient()
+            .getClient(token)
             .from('resources')
             .insert({
             ...createResourceDto,
@@ -53,9 +53,9 @@ let ResourcesService = class ResourcesService {
         }
         return data;
     }
-    async update(id, updateResourceDto, userId) {
+    async update(id, updateResourceDto, userId, token) {
         const { data, error } = await this.supabaseService
-            .getClient()
+            .getClient(token)
             .from('resources')
             .update(updateResourceDto)
             .eq('id', id)
@@ -66,9 +66,9 @@ let ResourcesService = class ResourcesService {
         }
         return data;
     }
-    async remove(id) {
+    async remove(id, token) {
         const { error } = await this.supabaseService
-            .getClient()
+            .getClient(token)
             .from('resources')
             .delete()
             .eq('id', id);

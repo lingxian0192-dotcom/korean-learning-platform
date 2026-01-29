@@ -15,7 +15,18 @@ export class SupabaseService implements OnModuleInit {
     );
   }
 
-  getClient(): SupabaseClient {
+  getClient(token?: string): SupabaseClient {
+    if (token) {
+      return createClient(
+        this.configService.get<string>('SUPABASE_URL'),
+        this.configService.get<string>('SUPABASE_KEY'),
+        {
+          global: {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        },
+      );
+    }
     return this.client;
   }
 }

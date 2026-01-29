@@ -16,13 +16,15 @@ exports.ResourcesController = void 0;
 const common_1 = require("@nestjs/common");
 const resources_service_1 = require("./resources.service");
 const resource_dto_1 = require("./dto/resource.dto");
+const supabase_guard_1 = require("../auth/supabase.guard");
 let ResourcesController = class ResourcesController {
     constructor(resourcesService) {
         this.resourcesService = resourcesService;
     }
-    create(createResourceDto) {
-        const mockUserId = 'user_id_placeholder';
-        return this.resourcesService.create(createResourceDto, mockUserId);
+    create(req, createResourceDto) {
+        const userId = req.user.id;
+        const token = req.token;
+        return this.resourcesService.create(createResourceDto, userId, token);
     }
     findAll() {
         return this.resourcesService.findAll();
@@ -30,20 +32,24 @@ let ResourcesController = class ResourcesController {
     findOne(id) {
         return this.resourcesService.findOne(id);
     }
-    update(id, updateResourceDto) {
-        const mockUserId = 'user_id_placeholder';
-        return this.resourcesService.update(id, updateResourceDto, mockUserId);
+    update(req, id, updateResourceDto) {
+        const userId = req.user.id;
+        const token = req.token;
+        return this.resourcesService.update(id, updateResourceDto, userId, token);
     }
-    remove(id) {
-        return this.resourcesService.remove(id);
+    remove(req, id) {
+        const token = req.token;
+        return this.resourcesService.remove(id, token);
     }
 };
 exports.ResourcesController = ResourcesController;
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.UseGuards)(supabase_guard_1.SupabaseGuard),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [resource_dto_1.CreateResourceDto]),
+    __metadata("design:paramtypes", [Object, resource_dto_1.CreateResourceDto]),
     __metadata("design:returntype", void 0)
 ], ResourcesController.prototype, "create", null);
 __decorate([
@@ -61,17 +67,21 @@ __decorate([
 ], ResourcesController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.UseGuards)(supabase_guard_1.SupabaseGuard),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, resource_dto_1.UpdateResourceDto]),
+    __metadata("design:paramtypes", [Object, String, resource_dto_1.UpdateResourceDto]),
     __metadata("design:returntype", void 0)
 ], ResourcesController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.UseGuards)(supabase_guard_1.SupabaseGuard),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], ResourcesController.prototype, "remove", null);
 exports.ResourcesController = ResourcesController = __decorate([

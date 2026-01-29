@@ -20,12 +20,11 @@ let AuthService = class AuthService {
         const { email, password, name } = authDto;
         const { data, error } = await this.supabaseService
             .getClient()
-            .auth.signUp({
+            .auth.admin.createUser({
             email,
             password,
-            options: {
-                data: { name },
-            },
+            email_confirm: true,
+            user_metadata: { name },
         });
         if (error) {
             throw new common_1.UnauthorizedException(error.message);
@@ -54,7 +53,8 @@ let AuthService = class AuthService {
             password,
         });
         if (error) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+            console.error('Login error:', error);
+            throw new common_1.UnauthorizedException(error.message || 'Invalid credentials');
         }
         return {
             access_token: data.session.access_token,

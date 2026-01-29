@@ -1,0 +1,25 @@
+{
+  "name": "project_demo_1",
+  "version": "1.0.0",
+  "description": "Korean Learning Platform",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "deploy": "npx netlify deploy",
+    "test": "npm run test --workspaces"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingxian0192-dotcom/korean-learning-platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lingxian0192-dotcom/korean-learning-platform/issues"
+  },
+  "homepage": "https://github.com/lingxian0192-dotcom/korean-learning-platform#readme"
+}

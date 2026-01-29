@@ -9,15 +9,14 @@ export class AuthService {
   async signUp(authDto: AuthDto) {
     const { email, password, name } = authDto;
     
-    // 1. Sign up with Supabase Auth
+    // 1. Sign up with Supabase Auth (using admin to auto-confirm)
     const { data, error } = await this.supabaseService
       .getClient()
-      .auth.signUp({
+      .auth.admin.createUser({
         email,
         password,
-        options: {
-          data: { name }, // Metadata
-        },
+        email_confirm: true, // Auto-confirm the user
+        user_metadata: { name },
       });
 
     if (error) {
@@ -59,7 +58,8 @@ export class AuthService {
       });
 
     if (error) {
-      throw new UnauthorizedException('Invalid credentials');
+      console.error('Login error:', error);
+      throw new UnauthorizedException(error.message || 'Invalid credentials');
     }
 
     return {

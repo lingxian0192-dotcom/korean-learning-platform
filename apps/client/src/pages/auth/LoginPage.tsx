@@ -13,14 +13,19 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const onSubmit = async (data: any) => {
+    console.log("Submitting login form...", data);
     setIsLoading(true);
     try {
+      console.log("Calling API...");
       const response = await api.post('/auth/login', data);
+      console.log("API Response:", response);
       login(response.data.access_token, response.data.user);
       navigate('/');
     } catch (err: any) {
+      console.error('Login error details:', err);
+      const errorMessage = err.response?.data?.message || err.message || 'Login failed';
       setError('root', {
-        message: err.response?.data?.message || 'Login failed'
+        message: `${errorMessage} (Status: ${err.response?.status})`
       });
     } finally {
       setIsLoading(false);

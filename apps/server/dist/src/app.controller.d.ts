@@ -1,7 +1,9 @@
+import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 export declare class AppController {
     private readonly appService;
-    constructor(appService: AppService);
+    private readonly configService;
+    constructor(appService: AppService, configService: ConfigService);
     getHello(): string;
     getHealth(): Promise<{
         status: string;
@@ -14,4 +16,13 @@ export declare class AppController {
         userCount: number;
         error?: undefined;
     }>;
+    debugEnv(): {
+        status: string;
+        env: {
+            SUPABASE_URL: string;
+            SUPABASE_KEY_SET: boolean;
+            SUPABASE_KEY_ROLE: string;
+            PORT: string;
+        };
+    };
 }

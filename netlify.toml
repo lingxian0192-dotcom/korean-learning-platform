@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "apps/client/dist"
+
+[functions]
+  directory = "apps/server/dist/functions"
+  node_bundler = "esbuild"
+  # We rely on the local build script (apps/server/package.json -> build:lambda) to bundle dependencies.
+  # Netlify will re-bundle or zip this. 
+  # We remove explicit external_node_modules to avoid excluding critical packages like @nestjs/core if they were bundled.
+
+[[redirects]]
+  from = "/api/v1/*"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

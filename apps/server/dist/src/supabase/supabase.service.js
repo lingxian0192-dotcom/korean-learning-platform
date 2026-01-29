@@ -20,7 +20,14 @@ let SupabaseService = class SupabaseService {
     onModuleInit() {
         this.client = (0, supabase_js_1.createClient)(this.configService.get('SUPABASE_URL'), this.configService.get('SUPABASE_KEY'));
     }
-    getClient() {
+    getClient(token) {
+        if (token) {
+            return (0, supabase_js_1.createClient)(this.configService.get('SUPABASE_URL'), this.configService.get('SUPABASE_KEY'), {
+                global: {
+                    headers: { Authorization: `Bearer ${token}` },
+                },
+            });
+        }
         return this.client;
     }
 };

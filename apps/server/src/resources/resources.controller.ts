@@ -1,18 +1,18 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { CreateResourceDto, UpdateResourceDto } from './dto/resource.dto';
+import { SupabaseGuard } from '../auth/supabase.guard';
 
-// Placeholder for Auth Guard (will implement later)
-// For now, assume we extract userId from headers or a mock
 @Controller('resources')
 export class ResourcesController {
   constructor(private readonly resourcesService: ResourcesService) {}
 
   @Post()
-  create(@Body() createResourceDto: CreateResourceDto) {
-    // TODO: Get real user ID from AuthGuard
-    const mockUserId = 'user_id_placeholder'; 
-    return this.resourcesService.create(createResourceDto, mockUserId);
+  @UseGuards(SupabaseGuard)
+  create(@Request() req, @Body() createResourceDto: CreateResourceDto) {
+    const userId = req.user.id;
+    const token = req.token;
+    return this.resourcesService.create(createResourceDto, userId, token);
   }
 
   @Get()
@@ -26,14 +26,17 @@ export class ResourcesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateResourceDto: UpdateResourceDto) {
-    // TODO: Get real user ID from AuthGuard
-    const mockUserId = 'user_id_placeholder';
-    return this.resourcesService.update(id, updateResourceDto, mockUserId);
+  @UseGuards(SupabaseGuard)
+  update(@Request() req, @Param('id') id: string, @Body() updateResourceDto: UpdateResourceDto) {
+    const userId = req.user.id;
+    const token = req.token;
+    return this.resourcesService.update(id, updateResourceDto, userId, token);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.resourcesService.remove(id);
+  @UseGuards(SupabaseGuard)
+  remove(@Request() req, @Param('id') id: string) {
+    const token = req.token;
+    return this.resourcesService.remove(id, token);
   }
 }

@@ -6,9 +6,9 @@ import { CreateResourceDto, UpdateResourceDto } from './dto/resource.dto';
 export class ResourcesService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  async create(createResourceDto: CreateResourceDto, userId: string) {
+  async create(createResourceDto: CreateResourceDto, userId: string, token?: string) {
     const { data, error } = await this.supabaseService
-      .getClient()
+      .getClient(token)
       .from('resources')
       .insert({
         ...createResourceDto,
@@ -52,11 +52,11 @@ export class ResourcesService {
     return data;
   }
 
-  async update(id: string, updateResourceDto: UpdateResourceDto, userId: string) {
+  async update(id: string, updateResourceDto: UpdateResourceDto, userId: string, token?: string) {
     // Check ownership or admin role (RLS handles this at DB level, but good to check here too if needed)
     // For now rely on RLS
     const { data, error } = await this.supabaseService
-      .getClient()
+      .getClient(token)
       .from('resources')
       .update(updateResourceDto)
       .eq('id', id)
@@ -70,9 +70,9 @@ export class ResourcesService {
     return data;
   }
 
-  async remove(id: string) {
+  async remove(id: string, token?: string) {
     const { error } = await this.supabaseService
-      .getClient()
+      .getClient(token)
       .from('resources')
       .delete()
       .eq('id', id);

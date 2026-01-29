@@ -11,16 +11,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const app_service_1 = require("./app.service");
 let AppController = class AppController {
-    constructor(appService) {
+    constructor(appService, configService) {
         this.appService = appService;
+        this.configService = configService;
     }
     getHello() {
         return this.appService.getHello();
     }
     getHealth() {
         return this.appService.getHealth();
+    }
+    debugEnv() {
+        const supabaseUrl = this.configService.get('SUPABASE_URL');
+        const supabaseKey = this.configService.get('SUPABASE_KEY');
+        let keyRole = 'Unknown';
+        if (supabaseKey) {
+            try {
+                const payload = JSON.parse(atob(supabaseKey.split('.')[1]));
+                keyRole = payload.role || 'Unknown';
+            }
+            catch (e) {
+                keyRole = 'Invalid JWT';
+            }
+        }
+        return {
+            status: 'Debug',
+            env: {
+                SUPABASE_URL: supabaseUrl ? 'Set' : 'Missing',
+                SUPABASE_KEY_SET: !!supabaseKey,
+                SUPABASE_KEY_ROLE: keyRole,
+                PORT: process.env.PORT || 'Not Set (Defaulting)',
+            },
+        };
     }
 };
 exports.AppController = AppController;
@@ -36,8 +61,15 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getHealth", null);
+__decorate([
+    (0, common_1.Get)('debug-env'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "debugEnv", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    __metadata("design:paramtypes", [app_service_1.AppService,
+        config_1.ConfigService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

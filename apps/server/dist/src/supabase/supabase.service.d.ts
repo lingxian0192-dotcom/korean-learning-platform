@@ -6,5 +6,5 @@ export declare class SupabaseService implements OnModuleInit {
     private client;
     constructor(configService: ConfigService);
     onModuleInit(): void;
-    getClient(): SupabaseClient;
+    getClient(token?: string): SupabaseClient;
 }
