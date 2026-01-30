@@ -1,8 +1,9 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { BookOpen, User as UserIcon, Languages, LogIn, Settings } from 'lucide-react';
+import { BookOpen, User as UserIcon, Languages, LogIn, Settings, GraduationCap, Brain } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
+import { AiAssistant } from '../components/AiAssistant';
 
 export const MainLayout: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -11,6 +12,12 @@ export const MainLayout: React.FC = () => {
   const toggleLanguage = () => {
     const newLang = i18n.language === 'zh' ? 'en' : 'zh';
     i18n.changeLanguage(newLang);
+  };
+
+  const handleLogout = () => {
+    if (window.confirm(t('auth.logout_confirm') || 'Are you sure you want to logout?')) {
+      logout();
+    }
   };
 
   return (
@@ -30,10 +37,24 @@ export const MainLayout: React.FC = () => {
                   <BookOpen className="w-4 h-4 mr-2" />
                   {t('app.nav.resources')}
                 </Link>
-                {/* Admin Link - For demo showing to all logged in users or specifically admins */}
+                <Link
+                  to="/vocab"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  <GraduationCap className="w-4 h-4 mr-2" />
+                  Vocabulary
+                </Link>
+                <Link
+                  to="/srs"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  <Brain className="w-4 h-4 mr-2" />
+                  Review
+                </Link>
+                {/* Admin Link */}
                 {isAuthenticated && (
                   <Link
-                    to="/admin/resources"
+                    to="/admin"
                     className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                   >
                     <Settings className="w-4 h-4 mr-2" />
@@ -56,7 +77,7 @@ export const MainLayout: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <span className="text-sm text-gray-700">{user?.name}</span>
                   <button 
-                    onClick={logout}
+                    onClick={handleLogout}
                     className="p-2 rounded-full text-gray-400 hover:text-gray-500"
                     title="Logout"
                   >
@@ -80,6 +101,8 @@ export const MainLayout: React.FC = () => {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <Outlet />
       </main>
+
+      {isAuthenticated && <AiAssistant />}
     </div>
   );
 };

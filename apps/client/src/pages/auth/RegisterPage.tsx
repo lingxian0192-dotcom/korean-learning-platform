@@ -13,7 +13,31 @@ export const RegisterPage: React.FC = () => {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      await api.post('/auth/register', data);
+      // 1. Register
+      const res = await api.post('/auth/register', {
+        email: data.email,
+        password: data.password,
+        name: data.name
+      });
+      
+      // 2. Login (if session returned) or redirect
+      // Assuming auto-login isn't fully set up in backend response structure yet, we navigate to login.
+      // Ideally we should auto-login and redeem.
+      // For now, let's navigate to login, but maybe pass the code?
+      // Or better: Try to redeem if we have a token.
+      
+      if (res.data?.session?.access_token) {
+        // Auto redeem
+        try {
+          // Set temporary token for the redeem call
+           api.defaults.headers.common['Authorization'] = `Bearer ${res.data.session.access_token}`;
+           await api.post('/invitation/redeem', { code: data.invitationCode });
+        } catch (redeemErr) {
+           console.error('Redeem failed', redeemErr);
+           // Continue to login anyway
+        }
+      }
+
       navigate('/auth/login');
     } catch (err: any) {
       setError('root', {

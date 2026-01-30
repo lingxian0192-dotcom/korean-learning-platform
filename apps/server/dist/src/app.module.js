@@ -15,6 +15,10 @@ const supabase_module_1 = require("./supabase/supabase.module");
 const auth_module_1 = require("./auth/auth.module");
 const resources_module_1 = require("./resources/resources.module");
 const progress_module_1 = require("./progress/progress.module");
+const invitation_module_1 = require("./invitation/invitation.module");
+const vocab_module_1 = require("./vocab/vocab.module");
+const srs_module_1 = require("./srs/srs.module");
+const ai_module_1 = require("./ai/ai.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -25,7 +29,11 @@ exports.AppModule = AppModule = __decorate([
             supabase_module_1.SupabaseModule,
             auth_module_1.AuthModule,
             resources_module_1.ResourcesModule,
-            progress_module_1.ProgressModule
+            progress_module_1.ProgressModule,
+            invitation_module_1.InvitationModule,
+            vocab_module_1.VocabModule,
+            srs_module_1.SrsModule,
+            ai_module_1.AiModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

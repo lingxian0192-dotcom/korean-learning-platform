@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const resources_service_1 = require("./resources.service");
 const resource_dto_1 = require("./dto/resource.dto");
 const supabase_guard_1 = require("../auth/supabase.guard");
+const invited_guard_1 = require("../auth/invited.guard");
 let ResourcesController = class ResourcesController {
     constructor(resourcesService) {
         this.resourcesService = resourcesService;
@@ -45,7 +46,6 @@ let ResourcesController = class ResourcesController {
 exports.ResourcesController = ResourcesController;
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(supabase_guard_1.SupabaseGuard),
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -86,6 +86,7 @@ __decorate([
 ], ResourcesController.prototype, "remove", null);
 exports.ResourcesController = ResourcesController = __decorate([
     (0, common_1.Controller)('resources'),
+    (0, common_1.UseGuards)(supabase_guard_1.SupabaseGuard, invited_guard_1.InvitedGuard),
     __metadata("design:paramtypes", [resources_service_1.ResourcesService])
 ], ResourcesController);
 //# sourceMappingURL=resources.controller.js.map

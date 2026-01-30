@@ -2,13 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request }
 import { ResourcesService } from './resources.service';
 import { CreateResourceDto, UpdateResourceDto } from './dto/resource.dto';
 import { SupabaseGuard } from '../auth/supabase.guard';
+import { InvitedGuard } from '../auth/invited.guard';
 
 @Controller('resources')
+@UseGuards(SupabaseGuard, InvitedGuard)
 export class ResourcesController {
   constructor(private readonly resourcesService: ResourcesService) {}
 
   @Post()
-  @UseGuards(SupabaseGuard)
   create(@Request() req, @Body() createResourceDto: CreateResourceDto) {
     const userId = req.user.id;
     const token = req.token;
