@@ -108,11 +108,25 @@ server {
     listen 80;
     server_name _;
 
+    # === 关键修复开始 ===
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    # === 关键修复结束 ===
+
     root /var/www/project_demo/html;
     index index.html;
 
     location / {
         try_files $uri $uri/ /index.html;
+        # === 关键修复 ===
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+    }
+
+    # === 新增配置 ===
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
     }
 
     location /api/ {
@@ -122,6 +136,11 @@ server {
         proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
+        
+        # 增加超时时间
+        proxy_connect_timeout 60s;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
     }
 }
 EOF
