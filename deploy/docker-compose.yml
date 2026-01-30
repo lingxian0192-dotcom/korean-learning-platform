@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # 后端服务
+  server:
+    build: 
+      context: ../apps/server
+      dockerfile: Dockerfile
+    container_name: project_demo_server
+    restart: always
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+  # 前端服务 (包含 Nginx)
+  client:
+    build: 
+      context: ../apps/client
+      dockerfile: Dockerfile
+    container_name: project_demo_client
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

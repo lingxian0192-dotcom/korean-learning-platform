@@ -1,23 +1,24 @@
-# Use Node.js LTS
 FROM node:18-alpine
 
-# Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files
+# 1. 安装 PM2 全局工具 (用于进程管理)
+RUN npm install -g pm2
+
+# 2. 复制依赖描述文件
 COPY package*.json ./
 
-# Install dependencies
+# 3. 安装依赖
 RUN npm install
 
-# Copy source code
+# 4. 复制所有源代码
 COPY . .
 
-# Build the application
+# 5. 构建后端应用
 RUN npm run build
 
-# Expose port
+# 6. 暴露端口
 EXPOSE 3001
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+# 7. 启动命令：使用 pm2-runtime 启动，确保在 Docker 中稳定运行
+CMD ["pm2-runtime", "start", "dist/src/main.js", "--name", "api-server"]

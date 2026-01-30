@@ -34,3 +34,17 @@
 
 ### 第四阶段：运维与应急 (按需)
 1.  **[应急响应方案](emergency_response.md)**: 当你轮值 On-call 时必读。
+
+## 4. 部署与发布
+
+本项目采用 Docker 容器化部署方案，集成了 PM2 进行进程管理。
+
+### 4.1 部署架构
+- **Frontend**: Nginx 容器，负责静态资源托管与反向代理。
+- **Backend**: Node.js 容器，内部运行 `pm2-runtime` 托管 NestJS 应用。
+- **Orchestration**: 使用 Docker Compose 编排服务。
+
+### 4.2 操作指南
+所有部署脚本位于 `deploy/` 目录。
+- **首次部署**: 运行 `./deploy/deploy.sh`，脚本会自动安装 Docker 环境并启动服务。
+- **代码更新**: 拉取最新代码后，再次运行 `./deploy/deploy.sh` 即可自动重建并重启。
