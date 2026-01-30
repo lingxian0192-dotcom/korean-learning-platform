@@ -19,6 +19,7 @@ const invitation_module_1 = require("./invitation/invitation.module");
 const vocab_module_1 = require("./vocab/vocab.module");
 const srs_module_1 = require("./srs/srs.module");
 const ai_module_1 = require("./ai/ai.module");
+const settings_module_1 = require("./settings/settings.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -33,7 +34,8 @@ exports.AppModule = AppModule = __decorate([
             invitation_module_1.InvitationModule,
             vocab_module_1.VocabModule,
             srs_module_1.SrsModule,
-            ai_module_1.AiModule
+            ai_module_1.AiModule,
+            settings_module_1.SettingsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

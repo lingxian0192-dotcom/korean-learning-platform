@@ -16,23 +16,61 @@
     "login_link": "Sign in to existing account"
   },
   "admin": {
-    "title": "Manage Resources",
-    "add_resource": "Add New Resource",
-    "edit_resource": "Edit Resource",
-    "delete_resource": "Delete",
-    "form": {
-      "title": "Title",
-      "type": "Type",
-      "category": "Category",
-      "difficulty": "Difficulty",
-      "description": "Description",
-      "content": "Content (YouTube URL or Markdown)",
-      "thumbnail": "Thumbnail URL",
-      "submit": "Save Resource",
-      "cancel": "Cancel"
+    "title": "Admin Dashboard",
+    "tabs": {
+      "resources": "Resources",
+      "invitations": "Invitations",
+      "monitoring": "Monitoring",
+      "settings": "Settings"
     },
-    "success": "Resource saved successfully",
-    "delete_confirm": "Are you sure you want to delete this resource?"
+    "resources": {
+      "title": "Resource Management",
+      "add_button": "Add Resource",
+      "edit_title": "Edit Resource",
+      "add_title": "Add Resource",
+      "form": {
+        "title": "Title",
+        "category": "Category",
+        "type": "Type",
+        "difficulty": "Difficulty",
+        "description": "Description",
+        "content": "Content",
+        "thumbnail": "Thumbnail URL",
+        "cancel": "Cancel",
+        "submit": "Submit"
+      },
+      "delete_confirm": "Are you sure you want to delete this resource?"
+    },
+    "invitations": {
+      "title": "Invitation Codes",
+      "generate": "Generate",
+      "loading": "Loading codes...",
+      "copied": "Copied to clipboard",
+      "table": {
+        "code": "Code",
+        "status": "Status",
+        "used_by": "Used By",
+        "actions": "Actions"
+      }
+    },
+    "monitoring": {
+      "title": "System Monitoring",
+      "server_status": "Server Status",
+      "database": "Database",
+      "ai_tokens": "AI Tokens Today",
+      "check_logs": "Check Supabase for exact usage logs",
+      "online": "Online",
+      "connected": "Connected"
+    },
+    "settings": {
+      "title": "System Settings",
+      "api_key_label": "DeepSeek API Key",
+      "api_key_placeholder": "Enter your API key",
+      "save": "Save Settings",
+      "success": "Settings saved successfully",
+      "loading": "Loading settings...",
+      "error": "Error saving settings"
+    }
   },
   "detail": {
     "back": "Back to Resources",
@@ -74,5 +112,11 @@
       "audio": "AUDIO",
       "interactive": "INTERACTIVE"
     }
+  },
+  "ai": {
+    "title": "LingKR AI Tutor",
+    "welcome": "안녕하세요! I am your Korean learning assistant. How can I help you today?",
+    "placeholder": "Ask about Korean...",
+    "error": "Sorry, I encountered an error. Please try again."
   }
 }

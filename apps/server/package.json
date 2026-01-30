@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build && npm run build:lambda",
     "build:lambda": "esbuild src/api.ts --bundle --platform=node --target=node18 --outfile=dist/functions/api.js --external:@nestjs/microservices --external:@nestjs/websockets",
+    "build:vps": "esbuild src/main.ts --bundle --platform=node --target=node18 --outfile=dist/server.js --external:@nestjs/microservices --external:@nestjs/websockets",
     "postinstall": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

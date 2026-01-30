@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 
 interface Message {
@@ -9,13 +10,20 @@ interface Message {
 }
 
 export const AiAssistant: React.FC = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '안녕하세요! I am your Korean learning assistant. How can I help you today?' }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    if (!initialized.current) {
+      setMessages([{ role: 'assistant', content: t('ai.welcome') }]);
+      initialized.current = true;
+    }
+  }, [t]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -38,7 +46,7 @@ export const AiAssistant: React.FC = () => {
       const res = await api.post('/ai/chat', { message: userMsg });
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.content }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: t('ai.error') }]);
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +61,7 @@ export const AiAssistant: React.FC = () => {
           <div className="bg-indigo-600 p-4 flex justify-between items-center text-white">
             <div className="flex items-center">
               <Bot className="w-5 h-5 mr-2" />
-              <span className="font-bold">LingKR AI Tutor</span>
+              <span className="font-bold">{t('ai.title')} <span className="text-xs opacity-70">(v2.0)</span></span>
             </div>
             <button onClick={() => setIsOpen(false)} className="hover:bg-indigo-700 p-1 rounded">
               <X className="w-4 h-4" />
@@ -98,7 +106,7 @@ export const AiAssistant: React.FC = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about Korean..."
+              placeholder={t('ai.placeholder')}
               className="flex-1 border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-sm"
               disabled={isLoading}
             />

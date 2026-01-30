@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Trash2, Edit2, X, Key, Activity, BookOpen, Copy } from 'lucide-react';
+import { Plus, Trash2, Edit2, X, Key, Activity, BookOpen, Copy, Settings } from 'lucide-react';
 import { api } from '../../lib/api';
 import { Resource } from '../../types';
 
 // --- Sub-components for Tabs ---
 
 const ResourcesTab: React.FC = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -71,7 +73,7 @@ const ResourcesTab: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this resource?')) {
+    if (window.confirm(t('admin.resources.delete_confirm'))) {
       deleteMutation.mutate(id);
     }
   };
@@ -82,18 +84,18 @@ const ResourcesTab: React.FC = () => {
     reset();
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>{t('common.loading')}</div>;
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold">Resource Management</h2>
+        <h2 className="text-xl font-bold">{t('admin.resources.title')}</h2>
         <button
           onClick={() => setIsEditing(true)}
           className="flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add Resource
+          {t('admin.resources.add_button')}
         </button>
       </div>
 
@@ -101,7 +103,7 @@ const ResourcesTab: React.FC = () => {
         <div className="bg-white shadow rounded-lg p-6 mb-8">
             <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-medium text-gray-900">
-                {editingId ? 'Edit Resource' : 'Add Resource'}
+                {editingId ? t('admin.resources.edit_title') : t('admin.resources.add_title')}
             </h2>
             <button onClick={resetForm} className="text-gray-400 hover:text-gray-500">
                 <X className="w-5 h-5" />
@@ -110,47 +112,47 @@ const ResourcesTab: React.FC = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                <label className="block text-sm font-medium text-gray-700">Title</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.title')}</label>
                 <input {...register('title', { required: true })} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
                 </div>
                 <div>
-                <label className="block text-sm font-medium text-gray-700">Category</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.category')}</label>
                 <input {...register('category', { required: true })} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
                 </div>
                 <div>
-                <label className="block text-sm font-medium text-gray-700">Type</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.type')}</label>
                 <select {...register('type')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                    <option value="video">Video</option>
-                    <option value="article">Article</option>
+                    <option value="video">{t('resources.type.video')}</option>
+                    <option value="article">{t('resources.type.article')}</option>
                 </select>
                 </div>
                 <div>
-                <label className="block text-sm font-medium text-gray-700">Difficulty</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.difficulty')}</label>
                 <select {...register('difficulty')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
+                    <option value="beginner">{t('resources.difficulty.beginner')}</option>
+                    <option value="intermediate">{t('resources.difficulty.intermediate')}</option>
+                    <option value="advanced">{t('resources.difficulty.advanced')}</option>
                 </select>
                 </div>
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.description')}</label>
                 <textarea {...register('description')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" rows={3} />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Content</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.content')}</label>
                 <textarea {...register('content')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" rows={5} />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Thumbnail URL</label>
+                <label className="block text-sm font-medium text-gray-700">{t('admin.resources.form.thumbnail')}</label>
                 <input {...register('thumbnail')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
             </div>
             <div className="flex justify-end">
                 <button type="button" onClick={resetForm} className="mr-3 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                Cancel
+                {t('admin.resources.form.cancel')}
                 </button>
                 <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                Submit
+                {t('admin.resources.form.submit')}
                 </button>
             </div>
             </form>
@@ -197,6 +199,7 @@ const ResourcesTab: React.FC = () => {
 };
 
 const InvitationsTab: React.FC = () => {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [generateCount, setGenerateCount] = useState(1);
     
@@ -223,15 +226,15 @@ const InvitationsTab: React.FC = () => {
 
     const copyToClipboard = (code: string) => {
         navigator.clipboard.writeText(code);
-        alert('Copied to clipboard');
+        alert(t('admin.invitations.copied'));
     };
 
-    if (isLoading) return <div>Loading codes...</div>;
+    if (isLoading) return <div>{t('admin.invitations.loading')}</div>;
 
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold">Invitation Codes</h2>
+                <h2 className="text-xl font-bold">{t('admin.invitations.title')}</h2>
                 <div className="flex items-center space-x-2">
                     <input 
                         type="number" 
@@ -246,7 +249,7 @@ const InvitationsTab: React.FC = () => {
                         className="flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
                     >
                         <Plus className="w-4 h-4 mr-2" />
-                        Generate
+                        {t('admin.invitations.generate')}
                     </button>
                 </div>
             </div>
@@ -255,10 +258,10 @@ const InvitationsTab: React.FC = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Used By</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.invitations.table.code')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.invitations.table.status')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.invitations.table.used_by')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.invitations.table.actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -290,27 +293,28 @@ const InvitationsTab: React.FC = () => {
 };
 
 const MonitoringTab: React.FC = () => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-6">
-            <h2 className="text-xl font-bold">System Monitoring</h2>
+            <h2 className="text-xl font-bold">{t('admin.monitoring.title')}</h2>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                     <div className="px-4 py-5 sm:p-6">
-                        <dt className="text-sm font-medium text-gray-500 truncate">Server Status</dt>
-                        <dd className="mt-1 text-3xl font-semibold text-green-600">Online</dd>
+                        <dt className="text-sm font-medium text-gray-500 truncate">{t('admin.monitoring.server_status')}</dt>
+                        <dd className="mt-1 text-3xl font-semibold text-green-600">{t('admin.monitoring.online')}</dd>
                     </div>
                 </div>
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                     <div className="px-4 py-5 sm:p-6">
-                        <dt className="text-sm font-medium text-gray-500 truncate">Database</dt>
-                        <dd className="mt-1 text-3xl font-semibold text-green-600">Connected</dd>
+                        <dt className="text-sm font-medium text-gray-500 truncate">{t('admin.monitoring.database')}</dt>
+                        <dd className="mt-1 text-3xl font-semibold text-green-600">{t('admin.monitoring.connected')}</dd>
                     </div>
                 </div>
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                     <div className="px-4 py-5 sm:p-6">
-                        <dt className="text-sm font-medium text-gray-500 truncate">AI Tokens Today</dt>
+                        <dt className="text-sm font-medium text-gray-500 truncate">{t('admin.monitoring.ai_tokens')}</dt>
                         <dd className="mt-1 text-3xl font-semibold text-gray-900">--</dd>
-                        <p className="text-xs text-gray-400 mt-2">Check Supabase for exact usage logs</p>
+                        <p className="text-xs text-gray-400 mt-2">{t('admin.monitoring.check_logs')}</p>
                     </div>
                 </div>
             </div>
@@ -318,14 +322,86 @@ const MonitoringTab: React.FC = () => {
     );
 }
 
+const SettingsTab: React.FC = () => {
+    const { t } = useTranslation();
+    const { register, handleSubmit } = useForm();
+    const queryClient = useQueryClient();
+
+    const { data: settings, isLoading } = useQuery({
+        queryKey: ['settings', 'api-key'],
+        queryFn: async () => {
+            // Mock or actual implementation pending
+             try {
+                const { data } = await api.get('/settings/api-key');
+                return data;
+            } catch (e) {
+                return { apiKey: '' };
+            }
+        },
+    });
+
+    const mutation = useMutation({
+        mutationFn: async (data: { apiKey: string }) => {
+            await api.post('/settings/api-key', data);
+        },
+        onSuccess: () => {
+            alert(t('admin.settings.success'));
+            queryClient.invalidateQueries({ queryKey: ['settings', 'api-key'] });
+        },
+        onError: () => {
+            alert(t('admin.settings.error'));
+        }
+    });
+
+    const onSubmit = (data: any) => {
+        mutation.mutate(data);
+    };
+
+    if (isLoading) return <div>{t('admin.settings.loading')}</div>;
+
+    return (
+        <div className="space-y-6">
+            <h2 className="text-xl font-bold">{t('admin.settings.title')}</h2>
+            <div className="bg-white shadow sm:rounded-lg">
+                <div className="px-4 py-5 sm:p-6">
+                    <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-4">
+                        <div className="max-w-xl">
+                            <label htmlFor="api-key" className="block text-sm font-medium text-gray-700">
+                                {t('admin.settings.api_key_label')}
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    type="password"
+                                    id="api-key"
+                                    defaultValue={settings?.apiKey}
+                                    {...register('apiKey')}
+                                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                    placeholder={t('admin.settings.api_key_placeholder')}
+                                />
+                            </div>
+                        </div>
+                        <button
+                            type="submit"
+                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            {t('admin.settings.save')}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // --- Main Page Component ---
 
 export const AdminDashboardPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'resources' | 'invitations' | 'monitoring'>('resources');
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<'resources' | 'invitations' | 'monitoring' | 'settings'>('resources');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">{t('admin.title')}</h1>
       
       {/* Tabs */}
       <div className="border-b border-gray-200 mb-8">
@@ -339,7 +415,7 @@ export const AdminDashboardPage: React.FC = () => {
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
                 <BookOpen className="w-4 h-4 mr-2" />
-                Resources
+                {t('admin.tabs.resources')}
             </button>
             <button
                 onClick={() => setActiveTab('invitations')}
@@ -350,7 +426,7 @@ export const AdminDashboardPage: React.FC = () => {
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
                 <Key className="w-4 h-4 mr-2" />
-                Invitations
+                {t('admin.tabs.invitations')}
             </button>
             <button
                 onClick={() => setActiveTab('monitoring')}
@@ -361,7 +437,18 @@ export const AdminDashboardPage: React.FC = () => {
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
                 <Activity className="w-4 h-4 mr-2" />
-                Monitoring
+                {t('admin.tabs.monitoring')}
+            </button>
+            <button
+                onClick={() => setActiveTab('settings')}
+                className={`${
+                  activeTab === 'settings'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+            >
+                <Settings className="w-4 h-4 mr-2" />
+                {t('admin.tabs.settings')}
             </button>
         </nav>
       </div>
@@ -370,6 +457,7 @@ export const AdminDashboardPage: React.FC = () => {
       {activeTab === 'resources' && <ResourcesTab />}
       {activeTab === 'invitations' && <InvitationsTab />}
       {activeTab === 'monitoring' && <MonitoringTab />}
+      {activeTab === 'settings' && <SettingsTab />}
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { InvitationModule } from './invitation/invitation.module';
 import { VocabModule } from './vocab/vocab.module';
 import { SrsModule } from './srs/srs.module';
 import { AiModule } from './ai/ai.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AiModule } from './ai/ai.module';
     InvitationModule,
     VocabModule,
     SrsModule,
-    AiModule
+    AiModule,
+    SettingsModule
   ],
   controllers: [AppController],
   providers: [AppService],

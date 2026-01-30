@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const ai_service_1 = require("./ai.service");
 const ai_controller_1 = require("./ai.controller");
 const supabase_module_1 = require("../supabase/supabase.module");
+const settings_module_1 = require("../settings/settings.module");
 let AiModule = class AiModule {
 };
 exports.AiModule = AiModule;
 exports.AiModule = AiModule = __decorate([
     (0, common_1.Module)({
-        imports: [supabase_module_1.SupabaseModule],
+        imports: [supabase_module_1.SupabaseModule, settings_module_1.SettingsModule],
         controllers: [ai_controller_1.AiController],
         providers: [ai_service_1.AiService],
     })

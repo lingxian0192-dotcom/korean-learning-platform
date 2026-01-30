@@ -16,11 +16,13 @@ exports.AiService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const supabase_service_1 = require("../supabase/supabase.service");
+const settings_service_1 = require("../settings/settings.service");
 const axios_1 = __importDefault(require("axios"));
 let AiService = class AiService {
-    constructor(configService, supabaseService) {
+    constructor(configService, supabaseService, settingsService) {
         this.configService = configService;
         this.supabaseService = supabaseService;
+        this.settingsService = settingsService;
         this.deepSeekUrl = 'https://api.deepseek.com/chat/completions';
         this.systemPrompt = `
 You are a dedicated Korean language learning assistant for LingKR HUB.
@@ -33,10 +35,10 @@ Rules:
 `;
     }
     async chat(userId, message) {
-        const apiKey = this.configService.get('DEEPSEEK_API_KEY');
+        const apiKey = await this.settingsService.getApiKey();
         if (!apiKey) {
             return {
-                content: "DeepSeek API Key is missing. Please configure DEEPSEEK_API_KEY in the server environment. (Mock Response: 안녕하세요! How can I help you with Korean today?)"
+                content: "DeepSeek API Key is missing. Please configure DEEPSEEK_API_KEY in the server environment or Admin Panel. (Mock Response: 안녕하세요! How can I help you with Korean today?)"
             };
         }
         try {
@@ -75,6 +77,7 @@ exports.AiService = AiService;
 exports.AiService = AiService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,
-        supabase_service_1.SupabaseService])
+        supabase_service_1.SupabaseService,
+        settings_service_1.SettingsService])
 ], AiService);
 //# sourceMappingURL=ai.service.js.map

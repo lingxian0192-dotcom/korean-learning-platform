@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseService } from '../supabase/supabase.service';
+import { SettingsService } from '../settings/settings.service';
 import axios from 'axios';
 
 @Injectable()
@@ -18,7 +19,8 @@ Rules:
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly supabaseService: SupabaseService
+    private readonly supabaseService: SupabaseService,
+    private readonly settingsService: SettingsService
   ) {}
 
   async chat(userId: string, message: string) {
@@ -27,11 +29,11 @@ Rules:
     // Real implementation would sum tokens for today.
     
     // 2. Call DeepSeek
-    const apiKey = this.configService.get<string>('DEEPSEEK_API_KEY');
+    const apiKey = await this.settingsService.getApiKey();
     if (!apiKey) {
       // Return a mock response if no key configured (for demo stability)
       return { 
-        content: "DeepSeek API Key is missing. Please configure DEEPSEEK_API_KEY in the server environment. (Mock Response: 안녕하세요! How can I help you with Korean today?)" 
+        content: "DeepSeek API Key is missing. Please configure DEEPSEEK_API_KEY in the server environment or Admin Panel. (Mock Response: 안녕하세요! How can I help you with Korean today?)" 
       };
     }
 
